@@ -34,7 +34,7 @@ class CpfTest {
     @DisplayName("CPF Invariants and Rules")
     class CpfInvariants{
         @ParameterizedTest
-        @ValueSource(strings = {"", " ", "123", "1234567890", "123456789012"})
+        @ValueSource(strings = { "123", "1234567890", "123456789012"})
         @DisplayName("Should throw exception for invalid digit length")
         void shouldThrowExceptionForInvalidLength(String invalidLength){
             DomainException ex = assertThrows(DomainException.class, () -> Cpf.from(invalidLength));
@@ -45,6 +45,14 @@ class CpfTest {
         @DisplayName("Should throw exception for null CPF")
         void shouldThrowExceptionForNullCpf() {
             DomainException ex = assertThrows(DomainException.class, () -> Cpf.from(null));
+            assertEquals("O Campo CPF é obrigatório.", ex.getMessage());
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"", " "})
+        @DisplayName("Should throw exception for empty CPF")
+        void shouldThrowExceptionForEmptyCpf(String invalidCpf) {
+            DomainException ex = assertThrows(DomainException.class, () -> Cpf.from(invalidCpf));
             assertEquals("O Campo CPF é obrigatório.", ex.getMessage());
         }
 
@@ -61,9 +69,9 @@ class CpfTest {
 
         @Test
         @DisplayName("Should throw exception when first verification digit fails.")
-        void shouldFailWhenFristDigitWrong(){
-            String wrongFristDigit = "52998224705";
-            DomainException ex = assertThrows(DomainException.class, () -> Cpf.from(wrongFristDigit));
+        void shouldFailWhenFirstDigitWrong(){
+            String wrongFirstDigit = "52998224705";
+            DomainException ex = assertThrows(DomainException.class, () -> Cpf.from(wrongFirstDigit));
             assertEquals("Invalid CPF digits.", ex.getMessage());
         }
 
