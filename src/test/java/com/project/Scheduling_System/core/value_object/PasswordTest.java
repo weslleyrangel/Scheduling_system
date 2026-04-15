@@ -14,7 +14,7 @@ class PasswordTest {
     @Test
     @DisplayName("Should create a valid password when it meets all strength requirements")
     void shouldCreateValidPassword() {
-        String strongPassword = "StrongPassword@123";
+        String strongPassword = "Strong@Pass123";
         Password password = Password.from(strongPassword);
         assertEquals(strongPassword, password.getValue());
     }

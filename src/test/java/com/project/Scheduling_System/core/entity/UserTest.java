@@ -2,6 +2,7 @@ package com.project.Scheduling_System.core.entity;
 
 import com.project.Scheduling_System.core.value_object.Cpf;
 import com.project.Scheduling_System.core.value_object.Email;
+import com.project.Scheduling_System.core.value_object.Password;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,28 @@ class UserTest {
     
     private final Email validEmail = Email.from("test@example.com");
     private final Cpf validCpf = Cpf.from("52998224725");
+    private final Password validPassword = Password.from("Strong@Pass123");
+
+    @Test
+    @DisplayName("Should create a valid user with all required attributes")
+    void shouldCreateValidUser() {
+        User user = new User("Weslley Rangel", validEmail, validCpf, validPassword);
+
+        assertNotNull(user.getId());
+        assertEquals(validPassword, user.getPassword());
+    }
+
+    @Nested
+    @DisplayName("Security Validations")
+    class SecurityValidation{
+        @Test
+        @DisplayName("Should throw exception when password is null")
+        void shouldThrowExceptionForNullPassword() {
+            DomainException exception = assertThrows(DomainException.class, () -> new User("Weslley", validEmail, validCpf, null));
+            assertEquals("O Campo Password é obrigatório.", exception.getMessage());
+        }
+
+    }
 
     @Nested
     @DisplayName("Identification Validations")
@@ -23,7 +46,7 @@ class UserTest {
         @Test
         @DisplayName("User must have a valid UserId upon creation")
         void shouldHaveIdOnCreation(){
-            User user = new User("Weslley Rangel", validEmail, validCpf);
+            User user = new User("Weslley Rangel", validEmail, validCpf, validPassword);
 
             assertNotNull(user.getId(), "User ID should not be null.");
             assertNotNull(user.getId().getValue(), "The UUID inside UserId should not be null.");
@@ -38,8 +61,8 @@ class UserTest {
         void shouldCreateUserWithValidName() {
 
             String expectedName = "Weslley Rangel";
-            User user = new User(expectedName, validEmail, validCpf);
-            assertEquals(expectedName, user.getNome(), "The stored name must match the provided name.");
+            User user = new User(expectedName, validEmail, validCpf, validPassword);
+            assertEquals(expectedName, user.getName(), "The stored name must match the provided name.");
         }
 
         @ParameterizedTest
@@ -47,7 +70,7 @@ class UserTest {
         @DisplayName("Should throw DomainException when name is empty")
         void shouldThrowExceptionForEmptyName(String invalidName) {
             DomainException exception = assertThrows(DomainException.class, () -> {
-                new User(invalidName, validEmail, validCpf);
+                new User(invalidName, validEmail, validCpf, validPassword);
             });
 
             // Note: The expected message remains in Portuguese because DomainExceptionFactory generates it in Portuguese.
@@ -57,7 +80,7 @@ class UserTest {
         @Test
         @DisplayName("Should throw exception when name is null")
         void shouldThrowExceptionForNullName() {
-            DomainException exception = assertThrows(DomainException.class, () -> new User(null, validEmail, validCpf));
+            DomainException exception = assertThrows(DomainException.class, () -> new User(null, validEmail, validCpf, validPassword));
             assertEquals("O Campo Nome é obrigatório.", exception.getMessage());
         }
     }
@@ -68,7 +91,7 @@ class UserTest {
         @Test
         @DisplayName("Should throw exception when email is null")
         void shouldThrowExceptionForNullEmail() {
-            DomainException exception = assertThrows(DomainException.class, () -> new User("Weslley", null, null));
+            DomainException exception = assertThrows(DomainException.class, () -> new User("Weslley", null, null, null));
             assertEquals("O Campo Email é obrigatório.", exception.getMessage());
         }
     }
