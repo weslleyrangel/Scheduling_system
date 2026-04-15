@@ -20,7 +20,7 @@ public class User {
         if (cpf == null) {
             throw DomainExceptionFactory.mandatoryField("CPF");
         }
-        this.id = UserId.genereteNew();
+        this.id = UserId.generateNew();
         this.nome = nome.trim();
         this.email = email;
         this.cpf = cpf;

@@ -17,7 +17,7 @@ class UserIdTest {
     @Test
     @DisplayName("Should generate a new valid UserId")
     void shouldGenerateNewValidUserId(){
-        UserId id = UserId.genereteNew();
+        UserId id = UserId.generateNew();
         assertNotNull(id.getValue());
     }
 

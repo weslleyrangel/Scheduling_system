@@ -12,7 +12,7 @@ public final class UserId {
         this.value = value;
     }
 
-    public static UserId genereteNew(){
+    public static UserId generateNew(){
         return new UserId(UUID.randomUUID());
     }
 
